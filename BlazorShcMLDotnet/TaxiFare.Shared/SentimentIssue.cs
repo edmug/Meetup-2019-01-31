@@ -1,0 +1,12 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace TaxiFare.Shared
+{
+    public class SentimentIssue
+    {
+        public bool Label { get; set; }
+        public string Text { get; set; }
+    }
+}

@@ -1,0 +1,55 @@
+﻿@page "/"
+@using TaxiFare.Shared
+@using TaxiFare.Service
+@inject ISentimentPredictionService SentimentService
+@if (prediction == null)
+{
+    <p>loading...</p>
+}
+else
+{
+    <h1>Text: @sentimentIssue.Text</h1>
+    <h2>
+        Prediction:
+        @{
+            var predictionText = (Convert.ToBoolean(prediction.Prediction) ? "Toxic" : "Nice");
+        }
+        @predictionText sentiment
+    </h2>
+    <h3>Probability: @prediction.Probability</h3>
+    <h3>Score: @prediction.Score</h3>
+
+    <br />
+    <br />
+
+    <input placeholder="enter text to evaluate sentiment" style="width: 500px;" bind="@sentimentText" />
+    <button class="btn btn-primary" onclick="@PredictSentiment">Click me</button>
+
+}
+@functions  {
+
+SentimentPrediction prediction;
+SentimentIssue sentimentIssue;
+
+protected override void OnInit()
+{
+    sentimentIssue = new SentimentIssue()
+    {
+        Text = "This is a very rude movie"
+    };
+    prediction = SentimentService.GetSentiment(sentimentIssue);
+    StateHasChanged();
+}
+
+string sentimentText;
+
+void PredictSentiment()
+{
+    sentimentIssue = new SentimentIssue()
+    {
+        Text = sentimentText
+    };
+    prediction = SentimentService.GetSentiment(sentimentIssue);
+    StateHasChanged();
+}
+}
